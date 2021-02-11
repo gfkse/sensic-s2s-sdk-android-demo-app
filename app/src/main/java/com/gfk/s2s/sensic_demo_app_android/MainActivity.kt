@@ -23,4 +23,5 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(background)
 
     }
+
 }

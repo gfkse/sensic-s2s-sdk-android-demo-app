@@ -22,45 +22,38 @@
     <androidx.constraintlayout.helper.widget.Flow
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="button1,button2,button3"
+        app:constraint_referenced_ids="button1,button2,button3,button4,button5"
         app:flow_wrapMode="chain"
+        app:flow_verticalGap="40dp"
+        android:paddingTop="40dp"
+        app:flow_maxElementsWrap="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logo" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="@string/btn_video_on_demand"
+        style="@style/dashboard_button" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="@string/btn_live"
+        style="@style/dashboard_button" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="@string/btn_live_no_seek"
+        style="@style/dashboard_button" />
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="button1,button2,button3"
-        app:flow_wrapMode="chain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button3" />
-
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:text="@string/btn_content"
+        style="@style/dashboard_button" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:text="@string/btn_settings"
+        style="@style/dashboard_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
