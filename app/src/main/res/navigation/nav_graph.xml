@@ -10,4 +10,14 @@
         android:name="com.gfk.s2s.sensic_demo_app_android.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" />
+
+    <action
+        android:id="@+id/actionDashBoardFragment_toVODFragment"
+        app:destination="@+id/vodFragment" />
+
+    <fragment
+        android:id="@+id/vodFragment"
+        android:name="com.gfk.s2s.sensic_demo_app_android.VODFragment"
+        android:label="fragment_vod"
+        tools:layout="@layout/vod_fragment" />
 </navigation>
