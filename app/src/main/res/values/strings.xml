@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">S2S Demo App Android</string>
+    <string name="btn_video_on_demand">Video on Demand</string>
+    <string name="btn_live">Live</string>
+    <string name="btn_live_no_seek">Live (no Seek)</string>
+    <string name="btn_content">Content</string>
+    <string name="btn_settings">Settings</string>
+</resources>

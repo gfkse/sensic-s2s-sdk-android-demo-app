@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.S2SDemoApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimaryVariant">@color/red</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>
