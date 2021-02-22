@@ -1,4 +1,3 @@
 include ':s2sSDK'
-include ':s2s'
 include ':app'
 rootProject.name = "S2S Demo App"
