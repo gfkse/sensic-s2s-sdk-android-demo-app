@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.gfk.s2s.demo.s2s">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="com.gfk.s2s.App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+        <activity android:name="com.gfk.s2s.connect.ConnectActivity"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="sensic.net"
+                    android:scheme="sensic-demoapp" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.gfk.s2s.ui.videolist.ContentSelectionActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+        android:name="com.gfk.s2s.ui.details.VideoPlayerActivity"
+        android:screenOrientation="landscape" />
+        <activity
+            android:name="com.gfk.s2s.ui.webSdkView.WebSdkActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.gfk.s2s.ui.details.ContentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Browser" />
+        <activity
+            android:name="com.gfk.s2s.cast.ExpandedControlsActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.CastVideosDark">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.gfk.s2s.ui.details.VideoPlayerActivity" />
+        </activity>
+        <activity
+            android:name="com.gfk.s2s.ui.details.FireTvVideoPlayerActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name="com.gfk.s2s.ui.details.SettingsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.gfk.s2s.ui.pixel.PixelRequestActivity"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="com.gfk.s2s.cast.CastOptionsProvider" />
+    </application>
+
+</manifest>

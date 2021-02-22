@@ -1,0 +1,123 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven-publish'
+apply plugin: 'org.sonarqube'
+apply plugin: 'com.vanniktech.android.junit.jacoco'
+
+group = 'com.gfk.s2s'
+if (project.hasProperty("VERSION_NUMBER")) {
+    version = VERSION_NUMBER
+} else {
+    version = "1.9.2"
+}
+
+junitJacoco {
+    ignoreProjects = []
+    excludes
+    includeNoLocationClasses = true
+    includeInstrumentationCoverageInMergedReport = false
+}
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 1
+        versionName = version
+    }
+    buildTypes {
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testCoverageEnabled true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+        unitTests.returnDefaultValues = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+
+    testImplementation 'junit:junit:4.13'
+    testImplementation "org.robolectric:robolectric:4.3.1"
+    testImplementation 'com.squareup.assertj:assertj-android:1.1.1'
+    testImplementation 'com.squareup.okhttp:mockwebserver:2.7.5'
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation "org.powermock:powermock-mockito-release-full:1.6.4"
+    testImplementation "com.googlecode.multithreadedtc:multithreadedtc:1.01"
+
+}
+
+// Ensure that the publish task depends on assembly
+tasks.all { task ->
+    if (task instanceof AbstractPublishToMaven) {
+        task.dependsOn assemble
+    }
+}
+
+// Configure the destination repository with
+// S3 URL and access credentials
+publishing {
+
+    publications {
+        maven(MavenPublication) {
+            groupId group
+            artifactId 's2s'
+            artifact("$buildDir/outputs/aar/s2s-release.aar")
+            version version
+            pom.withXml {
+                def dependencies = asNode().appendNode('dependencies')
+
+                // Filter out anything that's not an external dependency. You shouldn't
+                // be publishing artifacts that depend on local (e.g. project) dependencies,
+                // but who knows...
+                configurations.getByName("release" + "CompileClasspath").allDependencies
+                        .findAll { it instanceof ExternalDependency }
+                        .each {
+                    def dependency = dependencies.appendNode('dependency')
+
+                    dependency.appendNode('groupId', it.group)
+                    dependency.appendNode('artifactId', it.name)
+                    dependency.appendNode('version', it.version)
+                    dependency.appendNode('scope', 'runtime')
+                }
+            }
+        }
+    }
+
+
+    repositories {
+        if (project.hasProperty("TESTING")) {
+            maven {
+                url "s3://download.sensic.net.s3.eu-central-1.amazonaws.com/s2s/sdk/android/testing"
+                credentials(AwsCredentials) {
+                    accessKey AWS_ACCESS_KEY_ID
+                    secretKey AWS_SECRET_ACCESS_KEY
+                }
+            }
+        } else if (project.hasProperty("PRODUCTION")) {
+            maven {
+                url "s3://download.sensic.net.s3.eu-central-1.amazonaws.com/s2s/sdk/android"
+                credentials(AwsCredentials) {
+                    accessKey AWS_ACCESS_KEY_ID
+                    secretKey AWS_SECRET_ACCESS_KEY
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Customize Expanded Controller -->
+    <style name="Theme.CastVideosDark" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimaryDark">@android:color/black</item>
+    </style>
+    <style name="Divider.Horizontal" parent="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item> // You can change thickness here.
+
+    </style>
+    <style name="Divider">
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+</resources>
