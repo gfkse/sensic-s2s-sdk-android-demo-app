@@ -1,59 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".DashboardFragment">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/logo"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <androidx.constraintlayout.helper.widget.Flow
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="vodButton,button2,button3,button4,button5"
-        app:flow_wrapMode="chain"
-        app:flow_verticalGap="40dp"
-        android:paddingTop="40dp"
-        app:flow_maxElementsWrap="3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logo" />
+        tools:context=".DashboardFragment">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/vodButton"
-        android:text="@string/btn_video_on_demand"
-        style="@style/dashboard_button" />
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/logo"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button2"
-        android:text="@string/btn_live"
-        style="@style/dashboard_button" />
+        <androidx.constraintlayout.helper.widget.Flow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="40dp"
+            app:constraint_referenced_ids="vodButton,button2,button3,button4,button5"
+            app:flow_maxElementsWrap="3"
+            app:flow_verticalGap="40dp"
+            app:flow_wrapMode="chain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logo" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button3"
-        android:text="@string/btn_live_no_seek"
-        style="@style/dashboard_button" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/vodButton"
+            style="@style/dashboard_button"
+            android:text="@string/btn_video_on_demand" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button4"
-        android:text="@string/btn_content"
-        style="@style/dashboard_button" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button2"
+            style="@style/dashboard_button"
+            android:text="@string/btn_live" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button5"
-        android:text="@string/btn_settings"
-        style="@style/dashboard_button" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button3"
+            style="@style/dashboard_button"
+            android:text="@string/btn_live_no_seek" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button4"
+            style="@style/dashboard_button"
+            android:text="@string/btn_content" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button5"
+            style="@style/dashboard_button"
+            android:text="@string/btn_settings" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

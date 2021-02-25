@@ -1,27 +1,46 @@
 package com.gfk.s2s.sensic_demo_app_android
-import android.os.Build
+
+import android.app.PictureInPictureParams
+import android.content.res.Configuration
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.widget.Toolbar
 
 
 class MainActivity : AppCompatActivity() {
+    var usePictureInPictureByHomeButtonPress = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-        }
-
         setContentView(R.layout.activity_main)
-        setupLayout()
+        val actionBar = findViewById<Toolbar>(R.id.toolBar)
+        setSupportActionBar(actionBar)
     }
 
-    private fun setupLayout() {
-        val background = ResourcesCompat.getDrawable(resources, R.drawable.orange_gradient, null)
-        supportActionBar?.setBackgroundDrawable(background)
-
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        if (usePictureInPictureByHomeButtonPress) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                enterPictureInPictureMode()
+            } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                enterPictureInPictureMode(PictureInPictureParams.Builder().build())
+            }
+        }
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        if (newConfig.orientation != Configuration.ORIENTATION_PORTRAIT) {
+            supportActionBar?.hide()
+        } else {
+            supportActionBar?.show()
+        }
+    }
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        if (isInPictureInPictureMode) {
+            supportActionBar?.hide()
+        } else {
+            supportActionBar?.show()
+        }
+    }
 }
