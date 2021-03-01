@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.gfk.s2s.s2sagent.S2SAgent
-import com.gfk.s2s.S2SExtension.S2SExtension
+//import com.gfk.s2s.S2SExtension.S2SExtension
 import com.google.android.exoplayer2.DefaultLoadControl
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -43,8 +43,8 @@ open class BaseVideoFragment : Fragment() {
 
     private fun setupS2sAgent() {
         agent = S2SAgent(configUrl, mediaId, context)
-        val s2sExtension = S2SExtension(mediaId, videoURL, null)
-        s2sExtension.bindPlayer(agent!!, exoPlayer!!)
+       // val s2sExtension = S2SExtension(mediaId, videoURL, null)
+     //   s2sExtension.bindPlayer(agent!!, exoPlayer!!)
     }
 
     private fun prepareVideoPlayer() {
