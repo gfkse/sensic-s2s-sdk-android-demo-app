@@ -33,10 +33,11 @@ android {
 }
 
 dependencies {
-   // implementation('com.gfk.s2s:s2s:+') { changing = true }
-    implementation project(path: ':s2s')
+    //GFK S2S SDK
+    implementation('com.gfk.s2s:s2s:+') { changing = true }
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // Android
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
@@ -47,6 +48,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.11.8'
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
 
 }
