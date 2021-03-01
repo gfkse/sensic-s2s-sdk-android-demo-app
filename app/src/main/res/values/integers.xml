@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- 0 = visible -->
-    <item name="toolbar_visibility" type="integer">0</item>
-</resources>
