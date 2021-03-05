@@ -5,14 +5,9 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.gfk.s2s.s2sagent.S2SAgent
-import com.gfk.s2s.S2SExtension.S2SExtension
 import com.google.android.exoplayer2.DefaultLoadControl
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -22,32 +17,21 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 
-open class BaseVideoFragment : Fragment() {
-    private var exoPlayer: ExoPlayer? = null
-    private var agent: S2SAgent? = null
+/**
+ * class BaseVideoFragment has the code to show the exoplayer.
+ *  The values for videoUrl, configUrl and mediaId are overridden in the
+ *  fragments extending from this class.
+ */
+
+open class BaseVideoFragment : BaseFragment() {
+    var exoPlayer: ExoPlayer? = null
+    var agent: S2SAgent? = null
     open val videoURL = ""
-    private val configUrl = "https://demo-config-preproduction.sensic.net/s2s-android.json"
-    private val mediaId = "s2sdemomediaid_ssa_android_new"
+    open val configUrl = ""
+    open val mediaId = ""
     private var playerPosition = 0L
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
-        (activity as? MainActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as? MainActivity)?.supportActionBar?.setDisplayShowHomeEnabled(true)
-
-        prepareVideoPlayer()
-        setupS2sAgent()
-    }
-
-    private fun setupS2sAgent() {
-        agent = S2SAgent(configUrl, mediaId, context)
-        val s2sExtension = S2SExtension(mediaId, videoURL, null)
-        s2sExtension.bindPlayer(agent!!, exoPlayer!!)
-    }
-
-    private fun prepareVideoPlayer() {
+    open fun prepareVideoPlayer() {
         val trackSelector = DefaultTrackSelector(requireContext())
         val loadControl = DefaultLoadControl()
 
@@ -101,7 +85,6 @@ open class BaseVideoFragment : Fragment() {
         exoPlayer?.release()
     }
 
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putLong("playerPosition", playerPosition);
@@ -127,11 +110,5 @@ open class BaseVideoFragment : Fragment() {
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> findNavController().popBackStack()
-        }
-        return true
 
-    }
 }
