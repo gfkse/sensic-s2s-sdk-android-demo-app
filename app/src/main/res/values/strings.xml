@@ -1,4 +1,5 @@
 <resources>
+    <string name="fragment_title_vod">Video on demand</string>
     <string name="app_name">S2S Demo App Android</string>
     <string name="btn_video_on_demand">Video on Demand</string>
     <string name="btn_live">Live</string>
