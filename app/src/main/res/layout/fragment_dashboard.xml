@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingTop="40dp"
-            app:constraint_referenced_ids="vodButton,button2,button3,button4,button5"
+            app:constraint_referenced_ids="vodButton,liveButton,liveNoSeekButton,button4,button5"
             app:flow_maxElementsWrap="3"
             app:flow_verticalGap="40dp"
             app:flow_wrapMode="chain"
@@ -38,12 +38,12 @@
             android:text="@string/btn_video_on_demand" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button2"
+            android:id="@+id/liveButton"
             style="@style/dashboard_button"
             android:text="@string/btn_live" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button3"
+            android:id="@+id/liveNoSeekButton"
             style="@style/dashboard_button"
             android:text="@string/btn_live_no_seek" />
 

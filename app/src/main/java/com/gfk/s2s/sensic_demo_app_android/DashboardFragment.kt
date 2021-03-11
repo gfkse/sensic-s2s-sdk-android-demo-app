@@ -16,6 +16,12 @@ class DashboardFragment : Fragment() {
         view.findViewById<Button>(R.id.vodButton).setOnClickListener {
             findNavController().navigate(R.id.actionDashBoardFragment_toVODFragment)
         }
+        view.findViewById<Button>(R.id.liveButton).setOnClickListener {
+            findNavController().navigate(R.id.actionDashBoardFragment_toLiveFragment)
+        }
+        view.findViewById<Button>(R.id.liveNoSeekButton).setOnClickListener {
+            findNavController().navigate(R.id.actionDashBoardFragment_toLiveNoSeekFragment)
+        }
         return view
 
     }

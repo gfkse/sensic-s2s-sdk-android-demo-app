@@ -46,6 +46,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.3.3"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.11.8'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.11.8'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
