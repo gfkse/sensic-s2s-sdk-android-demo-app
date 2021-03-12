@@ -12,6 +12,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.util.SntpClient;
 import com.google.android.exoplayer2.util.Util;
 
 import java.util.HashMap;
@@ -32,6 +33,9 @@ public class S2SExtension {
     private final Long timerIntervallMS = 500L;
     private Timeline.Period period;
     private long offset;
+
+    private Long initialOffset = null;
+    private Timeline.Window window;
 
     public S2SExtension(@NonNull String contentId, @NonNull String videoUrl, @Nullable HashMap<String, Object> customParams) {
         this.contentId = contentId;
@@ -139,17 +143,20 @@ public class S2SExtension {
             }
 
             currentPlayPositionSeconds = getLiveStreamPositionMS() / 1000.0;
+            offset = getCurrentLiveOffsetMs();
 
-            offset = getCurrentLiveOffset();
-            Log.d("GFK_LOG", "offset: " + offset);
             if (isHugeTimeJump() && lastEvent == SensicEvent.play) {
                 timeObserver.post(() -> s2sAgent.stop());
                 lastEvent = SensicEvent.timeJump;
             } else if (lastEvent == SensicEvent.timeJump) {
+                Log.d("GFK_LOG", "timeJump Play offset " + offset / 1000);
+
                 timeObserver.post(() -> s2sAgent.playStreamLive(contentId, "", (int) offset, videoUrl, customParams));
                 lastEvent = SensicEvent.play;
             } else if (lastPlayerStatusWasPlaying != exoPlayer.isPlaying()) {
+
                 if (lastEvent != SensicEvent.play) {
+                    Log.d("GFK_LOG", "lastPlayerStatusWasPlaying Play offset " + offset / 1000);
                     timeObserver.post(() -> s2sAgent.playStreamLive(contentId, "", (int) offset, videoUrl, customParams));
                     lastEvent = SensicEvent.play;
                 } else {
@@ -166,18 +173,39 @@ public class S2SExtension {
 
     }
 
-    private long getCurrentLiveOffset() {
+    private long getCurrentLiveOffsetMs() {
         Timeline timeline = exoPlayer.getCurrentTimeline();
         if (timeline.isEmpty()) {
             return C.TIME_UNSET;
         }
-
-        Timeline.Window currentWindow = timeline.getWindow(exoPlayer.getCurrentWindowIndex(), new Timeline.Window());
-        long windowStartTimeMs = timeline.getWindow(exoPlayer.getCurrentWindowIndex(), currentWindow).windowStartTimeMs;
-        if (windowStartTimeMs == C.TIME_UNSET) {
-            return C.TIME_UNSET;
+        if (window == null) {
+            window = new Timeline.Window();
         }
-        return SystemClock.elapsedRealtime() - windowStartTimeMs - exoPlayer.getContentPosition();
+        window = timeline.getWindow(exoPlayer.getCurrentWindowIndex(), window);
+        //trying to get windowStartTimeMs like exoplayer dev-v2 branch
+        long windowStartTimeMs = window.windowStartTimeMs;
+        Log.d("GFK_LOG", "getCurrentLiveOffset" +  exoPlayer.getCurrentLiveOffset());
+        if (true  || windowStartTimeMs == C.TIME_UNSET) {
+            // windowStartTimeMs N/A, Manifest is missing program-date-time
+            long value = window.getPositionInFirstPeriodMs() + window.getDurationMs() - getLiveStreamPositionMS();
+            Log.d("GFK_LOG", "value: " + (value));
+
+            if (initialOffset == null) {
+                initialOffset = value;
+            }
+            value -= initialOffset;
+            Log.d("GFK_LOG", "-init: " + (value));
+
+            return Math.max(0, value);
+        }
+        // windowStartTimeMs N/A, Manifest is missing program-date-time
+        long value = window.getPositionInFirstPeriodMs() + window.getDurationMs() - getLiveStreamPositionMS();
+        value -= 14000; // at the time of development, this was the most accurate value after pausing 10 or more seconds.
+        Log.d("GFK_LOG", "value: " + value);
+
+        // window start time is set, return value without knowing server client clock difference.
+        // dev-v2 branch from exoplayer uses a SntpClient to fetch the server time
+        return System.currentTimeMillis() - (windowStartTimeMs + getLiveStreamPositionMS());
     }
 
     private long getLiveStreamPositionMS() {
