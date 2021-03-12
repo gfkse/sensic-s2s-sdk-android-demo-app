@@ -11,16 +11,14 @@ import com.gfk.s2s.s2sagent.S2SAgent
 import com.gfk.s2s.sensic_demo_app_android.BaseFragment
 import com.gfk.s2s.sensic_demo_app_android.MainActivity
 import com.gfk.s2s.sensic_demo_app_android.R
-import com.google.android.exoplayer2.ControlDispatcher
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.ui.DefaultTimeBar
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.Util
@@ -51,8 +49,9 @@ open class BaseVideoFragment : BaseFragment() {
         )
         val mediaSource =
             ProgressiveMediaSource.Factory(DefaultDataSourceFactory(requireContext(), userAgent))
-                .createMediaSource(Uri.parse(videoURL))
-        exoPlayer?.prepare(mediaSource)
+                .createMediaSource(MediaItem.fromUri(videoURL))
+        exoPlayer?.setMediaSource(mediaSource)
+        exoPlayer?.prepare()
         exoPlayer?.seekTo(playerPosition)
         exoPlayer?.playWhenReady = true
     }
@@ -60,64 +59,12 @@ open class BaseVideoFragment : BaseFragment() {
     fun prepareLiveVideoPlayer() {
         exoPlayer = SimpleExoPlayer.Builder(requireContext()).build()
         view?.findViewById<PlayerView>(R.id.videoView)?.player = exoPlayer
-
-        val dataSourceFactory: DataSource.Factory = DefaultHttpDataSourceFactory(
-            Util.getUserAgent(requireContext(), getString(R.string.app_name))
-        )
-        val hlsMediaSource: HlsMediaSource =
-            HlsMediaSource.Factory(dataSourceFactory).createMediaSource(
-                Uri.parse(videoURL)
-            )
-
-        exoPlayer?.prepare(hlsMediaSource)
+        val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
+        val hlsMediaSource: HlsMediaSource = HlsMediaSource.Factory(dataSourceFactory)
+            .createMediaSource(MediaItem.fromUri(videoURL))
+        exoPlayer?.setMediaSource(hlsMediaSource)
+        exoPlayer?.prepare()
         exoPlayer?.playWhenReady = true
-    }
-
-    fun disableSeekFromExoPlayer() {
-        val playerView = view?.findViewById<PlayerView>(R.id.videoView)
-        try {
-            val timeBar = playerView?.findViewById<DefaultTimeBar>(R.id.exo_progress)
-            timeBar?.hideScrubber()
-            timeBar?.isEnabled = false // clicks on timeBar still seek
-            playerView?.setControlDispatcher(object : ControlDispatcher {
-                override fun dispatchSetPlayWhenReady(
-                    player: Player,
-                    playWhenReady: Boolean
-                ): Boolean {
-                    player.playWhenReady = playWhenReady
-                    return true
-                }
-
-                override fun dispatchSeekTo(
-                    player: Player,
-                    windowIndex: Int,
-                    positionMs: Long
-                ): Boolean {
-                    return false
-                }
-
-                override fun dispatchSetRepeatMode(player: Player, repeatMode: Int): Boolean {
-                    player.repeatMode = repeatMode
-                    return true
-                }
-
-                override fun dispatchSetShuffleModeEnabled(
-                    player: Player,
-                    shuffleModeEnabled: Boolean
-                ): Boolean {
-                    player.shuffleModeEnabled = shuffleModeEnabled
-                    return true
-                }
-
-                override fun dispatchStop(player: Player, reset: Boolean): Boolean {
-                    player.stop(reset)
-                    return true
-                }
-            })
-
-        } catch (e: Exception) {
-            Log.d("GFK_SENSIC_APP", "Exception: " + e.localizedMessage, e)
-        }
     }
 
     override fun onResume() {

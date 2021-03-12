@@ -12,7 +12,7 @@ import com.gfk.s2s.sensic_demo_app_android.R
 
 class LiveNoSeekFragment : BaseVideoFragment() {
 
-    override val videoURL = "https://d2e1asnsl7br7b.cloudfront.net/7782e205e72f43aeb4a48ec97f66ebbe/index_1.m3u8"
+    override val videoURL = "https://rbmn-live.akamaized.net/hls/live/2002830/geoSTVDEweb/master.m3u8"
     override val configUrl = "https://demo-config-preproduction.sensic.net/s2s-android.json"
     override val mediaId = "s2sdemomediaid_ssa_android_new"
 
@@ -29,8 +29,6 @@ class LiveNoSeekFragment : BaseVideoFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         super.prepareLiveVideoPlayer()
-
-        super.disableSeekFromExoPlayer()
 
         agent = S2SAgent(configUrl, mediaId, context)
         val s2sExtension = S2SExtension(
