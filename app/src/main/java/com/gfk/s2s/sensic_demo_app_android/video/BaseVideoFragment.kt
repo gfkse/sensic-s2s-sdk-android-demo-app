@@ -50,9 +50,8 @@ open class BaseVideoFragment : BaseFragment() {
                 ?: ""
         )
         val mediaSource =
-            ProgressiveMediaSource.Factory(DefaultDataSourceFactory(context, userAgent))
+            ProgressiveMediaSource.Factory(DefaultDataSourceFactory(requireContext(), userAgent))
                 .createMediaSource(Uri.parse(videoURL))
-
         exoPlayer?.prepare(mediaSource)
         exoPlayer?.seekTo(playerPosition)
         exoPlayer?.playWhenReady = true
@@ -65,14 +64,12 @@ open class BaseVideoFragment : BaseFragment() {
         val dataSourceFactory: DataSource.Factory = DefaultHttpDataSourceFactory(
             Util.getUserAgent(requireContext(), getString(R.string.app_name))
         )
-
         val hlsMediaSource: HlsMediaSource =
             HlsMediaSource.Factory(dataSourceFactory).createMediaSource(
                 Uri.parse(videoURL)
             )
 
         exoPlayer?.prepare(hlsMediaSource)
-        exoPlayer?.seekTo(playerPosition)
         exoPlayer?.playWhenReady = true
     }
 
@@ -118,7 +115,6 @@ open class BaseVideoFragment : BaseFragment() {
                 }
             })
 
-
         } catch (e: Exception) {
             Log.d("GFK_SENSIC_APP", "Exception: " + e.localizedMessage, e)
         }
@@ -127,6 +123,7 @@ open class BaseVideoFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         (activity as? MainActivity)?.usePictureInPictureByHomeButtonPress = true
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
             activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE) == true
         ) {

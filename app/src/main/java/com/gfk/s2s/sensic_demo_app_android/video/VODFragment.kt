@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.gfk.s2s.S2SExtension.S2SExtension
 import com.gfk.s2s.s2sagent.S2SAgent
 import com.gfk.s2s.sensic_demo_app_android.MainActivity
 import com.gfk.s2s.sensic_demo_app_android.R
+import com.gfk.s2s.sensic_demo_app_android.S2SExtension
+import java.lang.Exception
 
 
 class VODFragment : BaseVideoFragment() {
@@ -31,7 +32,11 @@ class VODFragment : BaseVideoFragment() {
         super.prepareVideoPlayer()
 
         agent = S2SAgent(configUrl, mediaId, context)
-        val s2sExtension = S2SExtension(mediaId, videoURL, null)
+        val s2sExtension = S2SExtension(
+            mediaId,
+            videoURL,
+            null
+        )
         s2sExtension.bindPlayer(agent!!, exoPlayer!!)
     }
 

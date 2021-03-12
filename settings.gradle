@@ -1,2 +1,4 @@
 include ':app'
+include ':s2s'
+
 rootProject.name = "S2S Demo App"
