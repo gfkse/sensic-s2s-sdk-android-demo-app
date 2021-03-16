@@ -19,10 +19,6 @@
         android:id="@+id/actionDashBoardFragment_toLiveFragment"
         app:destination="@+id/liveFragment" />
 
-    <action
-        android:id="@+id/actionDashBoardFragment_toLiveNoSeekFragment"
-        app:destination="@+id/liveNoSeekFragment" />
-
     <fragment
         android:id="@+id/vodFragment"
         android:name="com.gfk.s2s.sensic_demo_app_android.video.VODFragment"
@@ -33,12 +29,6 @@
         android:id="@+id/liveFragment"
         android:name="com.gfk.s2s.sensic_demo_app_android.video.LiveFragment"
         android:label="fragment_live"
-        tools:layout="@layout/video_fragment" />
-
-    <fragment
-        android:id="@+id/liveNoSeekFragment"
-        android:name="com.gfk.s2s.sensic_demo_app_android.video.LiveNoSeekFragment"
-        android:label="fragment_live_no_seek"
         tools:layout="@layout/video_fragment" />
 
 </navigation>
