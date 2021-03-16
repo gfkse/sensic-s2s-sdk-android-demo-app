@@ -138,7 +138,7 @@ public class Collector implements ICollector {
     }
 
     public String getVersion() {
-        return config.getProjectVersion() + "/" + BuildConfig.VESION_APP_NAME + "/" + config.getConfigVersion();
+        return config.getProjectVersion() + "/" + BuildConfig.VERSION_APP_NAME + "/" + config.getConfigVersion();
     }
 
     public String getOrigin() {

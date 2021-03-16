@@ -1,4 +1,4 @@
-package com.gfk.s2s.sensic_demo_app_android
+package com.gfk.s2s.sensic_demo_app_android.video
 
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -8,14 +8,21 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.gfk.s2s.s2sagent.S2SAgent
-import com.google.android.exoplayer2.DefaultLoadControl
-import com.google.android.exoplayer2.ExoPlayer
+import com.gfk.s2s.sensic_demo_app_android.BaseFragment
+import com.gfk.s2s.sensic_demo_app_android.MainActivity
+import com.gfk.s2s.sensic_demo_app_android.R
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.Util
+
 
 /**
  * class BaseVideoFragment has the code to show the exoplayer.
@@ -29,33 +36,43 @@ open class BaseVideoFragment : BaseFragment() {
     open val videoURL = ""
     open val configUrl = ""
     open val mediaId = ""
-    private var playerPosition = 0L
+    var playerPosition = 0L
 
-    open fun prepareVideoPlayer() {
-        val trackSelector = DefaultTrackSelector(requireContext())
-        val loadControl = DefaultLoadControl()
 
-        exoPlayer = SimpleExoPlayer.Builder(requireContext()).setTrackSelector(trackSelector)
-                .setLoadControl(loadControl).build()
+    fun prepareVideoPlayer() {
+        exoPlayer = SimpleExoPlayer.Builder(requireContext()).build()
+        view?.findViewById<PlayerView>(R.id.videoView)?.player = exoPlayer
+
         val userAgent = Util.getUserAgent(
-                requireContext(), context?.getString(R.string.app_name)
+            requireContext(), context?.getString(R.string.app_name)
                 ?: ""
         )
         val mediaSource =
-                ProgressiveMediaSource.Factory(DefaultDataSourceFactory(context, userAgent))
-                        .createMediaSource(Uri.parse(videoURL))
-
-        view?.findViewById<PlayerView>(R.id.videoView)?.player = exoPlayer
-        exoPlayer?.prepare(mediaSource)
+            ProgressiveMediaSource.Factory(DefaultDataSourceFactory(requireContext(), userAgent))
+                .createMediaSource(MediaItem.fromUri(videoURL))
+        exoPlayer?.setMediaSource(mediaSource)
+        exoPlayer?.prepare()
         exoPlayer?.seekTo(playerPosition)
+        exoPlayer?.playWhenReady = true
+    }
+
+    fun prepareLiveVideoPlayer() {
+        exoPlayer = SimpleExoPlayer.Builder(requireContext()).build()
+        view?.findViewById<PlayerView>(R.id.videoView)?.player = exoPlayer
+        val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
+        val hlsMediaSource: HlsMediaSource = HlsMediaSource.Factory(dataSourceFactory)
+            .createMediaSource(MediaItem.fromUri(videoURL))
+        exoPlayer?.setMediaSource(hlsMediaSource)
+        exoPlayer?.prepare()
         exoPlayer?.playWhenReady = true
     }
 
     override fun onResume() {
         super.onResume()
         (activity as? MainActivity)?.usePictureInPictureByHomeButtonPress = true
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
-                activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE) == true
+            activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE) == true
         ) {
             if (activity?.isInPictureInPictureMode == false) {
                 exoPlayer?.playWhenReady = true
@@ -68,7 +85,7 @@ open class BaseVideoFragment : BaseFragment() {
     override fun onPause() {
         super.onPause()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
-                activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE) == true
+            activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE) == true
         ) {
             if (activity?.isInPictureInPictureMode == false) {
                 playerPosition = exoPlayer?.currentPosition ?: 0
@@ -108,7 +125,6 @@ open class BaseVideoFragment : BaseFragment() {
             params?.height = ConstraintLayout.LayoutParams.MATCH_CONSTRAINT
         }
     }
-
 
 
 }
