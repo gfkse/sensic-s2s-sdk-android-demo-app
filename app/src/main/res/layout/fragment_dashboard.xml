@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".DashboardFragment">
@@ -24,8 +25,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingTop="40dp"
-            app:constraint_referenced_ids="vodButton,liveButton,liveNoSeekButton,button4,button5"
-            app:flow_maxElementsWrap="3"
+            app:constraint_referenced_ids="vodButton,liveButton,button3,button4"
+            app:flow_horizontalAlign="start"
             app:flow_verticalGap="40dp"
             app:flow_wrapMode="chain"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,17 +44,12 @@
             android:text="@string/btn_live" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/liveNoSeekButton"
-            style="@style/dashboard_button"
-            android:text="@string/btn_live_no_seek" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button4"
+            android:id="@+id/button3"
             style="@style/dashboard_button"
             android:text="@string/btn_content" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button5"
+            android:id="@+id/button4"
             style="@style/dashboard_button"
             android:text="@string/btn_settings" />
 

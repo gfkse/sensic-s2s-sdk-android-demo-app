@@ -12,7 +12,7 @@ import com.gfk.s2s.sensic_demo_app_android.R
 
 class LiveFragment : BaseVideoFragment() {
 
-    override val videoURL = "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
+    override val videoURL = "https://zdf-hls-15.akamaized.net/hls/live/2016498/de/high/master.m3u8"
     override val configUrl = "https://demo-config-preproduction.sensic.net/s2s-android.json"
     override val mediaId = "s2sdemomediaid_ssa_android_new"
 

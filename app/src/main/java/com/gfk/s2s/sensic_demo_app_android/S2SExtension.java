@@ -63,6 +63,7 @@ public class S2SExtension {
             timeObserver.removeMessages(0);
         }
         timeObserver = new Handler(exoPlayer.getApplicationLooper());
+        resetValues();
         observeTime();
     }
 
@@ -77,6 +78,7 @@ public class S2SExtension {
             timeObserver.removeMessages(0);
         }
         timeObserver = new Handler(exoPlayer.getApplicationLooper());
+        resetValues();
         observeTimeLive();
     }
 
@@ -197,6 +199,14 @@ public class S2SExtension {
         }
         return position;
 
+    }
+
+    private void resetValues() {
+        currentPlayPositionSeconds = 0;
+        lastPlayPositionSeconds = 0;
+        lastEvent = SensicEvent.unknown;
+        lastPlayerStatusWasPlaying = false;
+        firstStartLiveWithPositionMS = 0;
     }
 
     private void unbindPlayer() {
